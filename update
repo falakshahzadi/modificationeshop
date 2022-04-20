@@ -1,0 +1,99 @@
+  // mydrawer for user or guest
+  
+     EcommerceApp.auth.currentUser != null ? ListTile(
+                    leading: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      "Logout",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onTap: () {
+                      if (EcommerceApp.auth.currentUser == null) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => AuthenticScreen()));
+                      } else {
+                        EcommerceApp.auth.signOut().then((c) {
+                          Route route = MaterialPageRoute(
+                              builder: (c) => AuthenticScreen());
+                          Navigator.pushReplacement(context, route);
+                        });
+                      }
+              
+                     } )
+                :SizedBox(),
+
+                EcommerceApp.auth.currentUser !=null ? Divider(
+                  height: 10.0,
+                  color: Colors.white,
+                  thickness: 6.0,
+                ):SizedBox(),
+                  EcommerceApp.auth.currentUser==null ? RaisedButton(child: Text("SignUp"),color: Colors.white,onPressed: (){
+                    Route route = MaterialPageRoute(
+                              builder: (c) => AuthenticScreen());
+                          Navigator.pushReplacement(context, route);
+
+                }):SizedBox()
+
+              ]
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+// cart for guest
+
+ Positioned(
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.brightness_1,
+                      size: 20.0,
+                      color: Colors.green,
+                    ),
+                    Positioned(
+                      top: 3.0,
+                      bottom: 4.0,
+                      left: 4.0,
+                      child: Consumer<CartItemCounter>(
+                        builder: (context, counter, _) {
+                          // print(
+                          //     """${EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).length}""");
+                          return counter.count == null &&
+                                  EcommerceApp.sharedPreferences
+                                          .getStringList(
+                                              EcommerceApp.userCartList)
+                                          .length ==
+                                      1 || EcommerceApp.auth.currentUser == null
+                              ? Text(
+                                  '0',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              : Text(
+                                  (EcommerceApp.sharedPreferences
+                                              .getStringList(
+                                                  EcommerceApp.userCartList)
+                                              .length -
+                                          1)
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500),
+                                );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
